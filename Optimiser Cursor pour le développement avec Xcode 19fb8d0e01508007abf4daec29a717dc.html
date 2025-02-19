@@ -1,0 +1,700 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Optimiser Cursor pour le développement avec Xcode</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="19fb8d0e-0150-8007-abf4-daec29a717dc" class="page sans"><header><img class="page-cover-image" src="https://images.unsplash.com/photo-1601836211377-4112e1c147ee?ixlib=rb-4.0.3&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb" style="object-position:center 0%"/><h1 class="page-title"><strong>Optimiser Cursor pour le développement avec Xcode</strong></h1><p class="page-description"></p></header><div class="page-body"><p id="19fb8d0e-0150-807c-b9a1-e3b863caabc1" class="">
+</p><p id="19fb8d0e-0150-8085-baaf-edbf661d01ca" class="">Le développement iOS et macOS peut être grandement amélioré en utilisant Cursor, un éditeur de code intelligent basé sur VSCode, en complément de Xcode. Ce guide vous explique comment configurer un environnement de développement Swift optimal avec Cursor.</p><p id="19fb8d0e-0150-805e-b6c5-fd56d3b47166" class="">
+</p><figure id="19fb8d0e-0150-806e-8ed5-e609d7c5aac4" class="image"><a href="Optimiser%20Cursor%20pour%20le%20de%CC%81veloppement%20avec%20Xcode%2019fb8d0e01508007abf4daec29a717dc/Capture_decran_2025-02-19_a_16.48.10.png"><img style="width:3456px" src="Optimiser%20Cursor%20pour%20le%20de%CC%81veloppement%20avec%20Xcode%2019fb8d0e01508007abf4daec29a717dc/Capture_decran_2025-02-19_a_16.48.10.png"/></a><figcaption>Capture d’écran de Cursor configuré pour travailler sur un projet Xcode</figcaption></figure><h1 id="19fb8d0e-0150-804f-b8b5-f391fb201953" class=""><strong>Pourquoi utiliser Cursor avec Xcode?</strong></h1><p id="19fb8d0e-0150-8054-970b-d79c5101b31b" class="">Cursor offre plusieurs avantages par rapport à l&#x27;éditeur natif de Xcode :</p><ul id="19fb8d0e-0150-80e7-8a93-e418ba5c1081" class="bulleted-list"><li style="list-style-type:disc">Interface légère et personnalisable basée sur VSCode</li></ul><ul id="19fb8d0e-0150-8011-b007-e8c08038b302" class="bulleted-list"><li style="list-style-type:disc">Fonctionnalités d&#x27;IA intégrées pour l&#x27;assistance au code</li></ul><ul id="19fb8d0e-0150-80b4-b9bd-d23705fc7a14" class="bulleted-list"><li style="list-style-type:disc">Meilleure performance avec les grands projets</li></ul><ul id="19fb8d0e-0150-8015-a857-dae678e0a8b4" class="bulleted-list"><li style="list-style-type:disc">Extensions puissantes adaptées au développement Swift</li></ul><h1 id="19fb8d0e-0150-8004-97b6-dddf9424ea65" class=""><strong>Configuration étape par étape</strong></h1><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><strong>1.  💾 Installation de Cursor</strong></summary><div class="indented"><p id="19fb8d0e-0150-80b7-832a-e28b8788b9ea" class="">Commencez par installer <a href="https://www.cursor.com/">Cursor depuis le site officiel</a>. Une fois installé, n&#x27;oubliez pas une étape importante :</p><p id="19fb8d0e-0150-8024-baa4-e38e820e5e4b" class="">
+</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="19fb8d0e-0150-80ed-99db-eb05fd0ad9a6"><div style="font-size:1.5em"><span class="icon">⚠️</span></div><div style="width:100%"><p id="19fb8d0e-0150-80d6-8e0a-fe66b58cfefe" class=""><strong>Important : </strong></p><p id="19fb8d0e-0150-80bb-a62a-f4800eb43437" class="">Activez le mode de confidentialité dans <code>Préférences &gt; Cursor Settings</code> pour protéger vos données de code. </p><p id="19fb8d0e-0150-80cb-bda9-e539134bbe21" class="">Cette étape est cruciale pour les développeurs travaillant sur des projets sensibles ou propriétaires.</p><figure id="19fb8d0e-0150-802a-b973-f32e4c9560ab" class="image"><a href="Optimiser%20Cursor%20pour%20le%20de%CC%81veloppement%20avec%20Xcode%2019fb8d0e01508007abf4daec29a717dc/Capture_decran_2025-02-19_a_15.48.27.png"><img style="width:643.984375px" src="Optimiser%20Cursor%20pour%20le%20de%CC%81veloppement%20avec%20Xcode%2019fb8d0e01508007abf4daec29a717dc/Capture_decran_2025-02-19_a_15.48.27.png"/></a></figure></div></figure><p id="19fb8d0e-0150-80eb-989e-cb951dd4c4a9" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><strong>2. 💾 Installation de xcodebuild</strong></summary><div class="indented"><p id="19fb8d0e-0150-8008-8de7-eeb4454589f9" class="">Pour pouvoir compiler vos projets en dehors de Xcode, vous aurez besoin de xcodebuild :</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="19fb8d0e-0150-801e-b095-eac3b73ef715" class="code"><code class="language-Shell" style="white-space:pre-wrap;word-break:break-all">xcode-select --install</code></pre><p id="19fb8d0e-0150-80ca-a57c-fc44c33f92d2" class="">Cet outil de ligne de commande permet à Cursor de communiquer avec le compilateur Swift sans avoir à ouvrir Xcode.</p><p id="19fb8d0e-0150-80ab-9bf1-ca2dd63b1338" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><strong>3. 💾 Installation de xcode-build-server</strong></summary><div class="indented"><p id="19fb8d0e-0150-80b3-836e-f47faf37b67e" class="">Le serveur de compilation Xcode est essentiel pour activer des fonctionnalités avancées comme le &quot;saut vers la référence&quot; (jump to reference) :</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="19fb8d0e-0150-80ee-93e7-dfc6a7c15dce" class="code"><code class="language-Shell" style="white-space:pre-wrap;word-break:break-all">brew install xcode-build-server</code></pre><p id="19fb8d0e-0150-80f8-afae-dcf4ac781020" class="">Ce composant, développé par SolaWing (disponible sur <a href="https://github.com/SolaWing/xcode-build-server">GitHub</a>), crée un pont entre Cursor et l&#x27;infrastructure de compilation de Xcode.</p><p id="19fb8d0e-0150-80a4-8f91-dd679c3b6f4c" class="">
+</p><p id="19fb8d0e-0150-80e4-b1d2-d9f660998a0b" class=""><strong>Configuration du serveur de compilation</strong></p><p id="19fb8d0e-0150-8009-a8ea-f233141f20b9" class="">Ouvrez le terminal dans Cursor avec <code>Cmd + Tab + P</code></p><p id="19fb8d0e-0150-80b4-82fb-dbd3e98087fc" class="">Exécutez la commande</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="19fb8d0e-0150-8038-bed3-d8683d87d092" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">&gt; Build server config</code></pre><p id="19fb8d0e-0150-8099-8449-ef36dcba8ee0" class="">Suivez les instructions pour générer le fichier de configuration “buildServer.json”</p><p id="19fb8d0e-0150-8046-8494-fa4b645e8645" class="">Cette configuration permet à Cursor d&#x27;utiliser les fonctionnalités de navigation intelligente dans le code Swift.</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><strong>4. 💾 Installation des extensions essentielles</strong></summary><div class="indented"><p id="19fb8d0e-0150-8093-ae44-d1e9b914c80b" class="">Pour transformer Cursor en un véritable environnement de développement Swift, installez ces extensions :</p><h3 id="19fb8d0e-0150-80c1-b850-e1c980eb58dc" class=""><strong>Extension Swift</strong></h3><p id="19fb8d0e-0150-80d4-831f-dfbc19033904" class=""><a href="https://htmlpreview.github.io/?https://github.com/pierrecesar/Cursor/blob/main/CursorXcode.html#review-details">Cette extension</a> permet la reconnaissance du langage Swift, l&#x27;autocomplétion et la coloration syntaxique.</p><figure id="19fb8d0e-0150-800c-b6cb-d886932e0ef0" class="image"><a href="Optimiser%20Cursor%20pour%20le%20de%CC%81veloppement%20avec%20Xcode%2019fb8d0e01508007abf4daec29a717dc/Capture_decran_2025-02-19_a_15.50.54.png"><img style="width:2208px" src="Optimiser%20Cursor%20pour%20le%20de%CC%81veloppement%20avec%20Xcode%2019fb8d0e01508007abf4daec29a717dc/Capture_decran_2025-02-19_a_15.50.54.png"/></a></figure><p id="19fb8d0e-0150-8043-a479-d67c766a98ec" class="">
+</p><h3 id="19fb8d0e-0150-80e2-a1e6-d964068343ed" class=""><strong>Extension SweetPad</strong></h3><p id="19fb8d0e-0150-80b0-9160-d8ec94880cb9" class=""><a href="https://htmlpreview.github.io/?https://github.com/pierrecesar/Cursor/blob/main/CursorXcode.html#review-details">Cette extension</a> transforme Cursor en un environnement de développement complet avec compilation intégrée, débogueur et gestion de projets Xcode</p><figure id="19fb8d0e-0150-8081-b0fc-ebcc6a511351" class="image"><a href="Optimiser%20Cursor%20pour%20le%20de%CC%81veloppement%20avec%20Xcode%2019fb8d0e01508007abf4daec29a717dc/Capture_decran_2025-02-19_a_15.51.13.png"><img style="width:2194px" src="Optimiser%20Cursor%20pour%20le%20de%CC%81veloppement%20avec%20Xcode%2019fb8d0e01508007abf4daec29a717dc/Capture_decran_2025-02-19_a_15.51.13.png"/></a></figure><p id="19fb8d0e-0150-807f-a746-f020495f10b4" class="">
+</p><h3 id="19fb8d0e-0150-8053-92a1-fe98b9464003" class=""><strong>Extension SwiftFormat</strong></h3><p id="19fb8d0e-0150-808b-a289-d05f88ba1ce7" class=""><a href="https://htmlpreview.github.io/?https://github.com/pierrecesar/Cursor/blob/main/CursorXcode.html#review-details">Cette extension</a> active le formatage automatique du code Swift selon les règles de style définies.</p><figure id="19fb8d0e-0150-80f6-8430-d64a5a49e674" class="image"><a href="Optimiser%20Cursor%20pour%20le%20de%CC%81veloppement%20avec%20Xcode%2019fb8d0e01508007abf4daec29a717dc/Capture_decran_2025-02-19_a_15.52.02.png"><img style="width:709.9765625px" src="Optimiser%20Cursor%20pour%20le%20de%CC%81veloppement%20avec%20Xcode%2019fb8d0e01508007abf4daec29a717dc/Capture_decran_2025-02-19_a_15.52.02.png"/></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="19fb8d0e-0150-8031-922f-fc8756b13cac"><div style="font-size:1.5em"><span class="icon">⚠️</span></div><div style="width:100%"><p id="19fb8d0e-0150-808b-98cd-c05b617d72ae" class=""><strong>Attention : </strong></p><p id="19fb8d0e-0150-80b0-9c35-d043f0eaec60" class="">Sur les projets partagés, assurez-vous que tous les développeurs utilisent les mêmes règles de formatage pour éviter les conflits lors des commits.</p></div></figure><p id="19fb8d0e-0150-80ad-b263-c28c2b495b7d" class="">
+</p><h3 id="19fb8d0e-0150-8081-8922-db2fb932f1b0" class=""><strong>Extension CodeLLDB</strong></h3><p id="19fb8d0e-0150-8048-bd8c-d060c5f37aa7" class=""><a href="https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb&amp;ssr=false#review-details">Cette extension</a> permet de debugger votre app en utilisant les commandes habituelles (po, e, etc..) son utilisation est décrite plus bas</p><figure id="19fb8d0e-0150-8057-9fdd-feeeed6a6506" class="image"><a href="Optimiser%20Cursor%20pour%20le%20de%CC%81veloppement%20avec%20Xcode%2019fb8d0e01508007abf4daec29a717dc/Capture_decran_2025-02-19_a_15.56.02.png"><img style="width:709.953125px" src="Optimiser%20Cursor%20pour%20le%20de%CC%81veloppement%20avec%20Xcode%2019fb8d0e01508007abf4daec29a717dc/Capture_decran_2025-02-19_a_15.56.02.png"/></a></figure><p id="19fb8d0e-0150-8094-99f3-c80cac54ffd5" class="">
+</p><h3 id="19fb8d0e-0150-8098-ba3d-e9a67beae977" class=""><strong>Extension de thème Xcode</strong></h3><p id="19fb8d0e-0150-80ec-b171-ec6e3878e80c" class=""><a href="https://htmlpreview.github.io/?https://github.com/pierrecesar/Cursor/blob/main/CursorXcode.html#review-details">Cette extension</a> reproduit l&#x27;apparence familière de Xcode dans Cursor pour une transition en douceur.</p><figure id="19fb8d0e-0150-802f-a0f8-df31d39285f8" class="image"><a href="Optimiser%20Cursor%20pour%20le%20de%CC%81veloppement%20avec%20Xcode%2019fb8d0e01508007abf4daec29a717dc/Capture_decran_2025-02-19_a_15.52.18.png"><img style="width:709.9921875px" src="Optimiser%20Cursor%20pour%20le%20de%CC%81veloppement%20avec%20Xcode%2019fb8d0e01508007abf4daec29a717dc/Capture_decran_2025-02-19_a_15.52.18.png"/></a></figure><p id="19fb8d0e-0150-8081-b12f-fe47997177e6" class="">
+</p><h3 id="19fb8d0e-0150-80b0-ae84-e987becae221" class=""><strong>Extension xcbeautify</strong></h3><figure id="19fb8d0e-0150-805f-a39d-c307802cc30a" class="image"><a href="Optimiser%20Cursor%20pour%20le%20de%CC%81veloppement%20avec%20Xcode%2019fb8d0e01508007abf4daec29a717dc/Capture_decran_2025-02-19_a_15.53.19.png"><img style="width:709.9921875px" src="Optimiser%20Cursor%20pour%20le%20de%CC%81veloppement%20avec%20Xcode%2019fb8d0e01508007abf4daec29a717dc/Capture_decran_2025-02-19_a_15.53.19.png"/></a></figure><p id="19fb8d0e-0150-8099-adb8-d76745d2a9dc" class=""><a href="https://github.com/cpisciotta/xcbeautify">Cette librairie</a> formate les sorties verbeuses de xcodebuild en un format clair et coloré, rendant le débogage beaucoup plus simple.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="19fb8d0e-0150-8043-8fc1-d77740c35721" class="code"><code class="language-Shell" style="white-space:pre-wrap;word-break:break-all">brew install xcbeautify</code></pre></div></details><h1 id="19fb8d0e-0150-80e7-8c9c-f945e5e8c7d1" class=""><strong>Utilisation quotidienne</strong></h1><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>🏃‍♂️ Compilation et exécution</strong></summary><div class="indented"><p id="19fb8d0e-0150-8039-b4df-e3bd00003c10" class="">Pour lancer votre application sur un simulateur ou un device physique :</p><ol type="1" id="19fb8d0e-0150-80de-aa04-efb946755c49" class="numbered-list" start="1"><li>Utilisez le raccourci <code>Cmd + Tab + P</code>  dans Cursor</li></ol><ol type="1" id="19fb8d0e-0150-80b7-96af-feccc0923ad0" class="numbered-list" start="2"><li>Tapez la commande build &amp; run dans le terminal contextuel</li></ol><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="19fb8d0e-0150-8008-b280-c8061a5c1eb5" class="code"><code class="language-Shell" style="white-space:pre-wrap;word-break:break-all">&gt; build &amp; run</code></pre><ol type="1" id="19fb8d0e-0150-8049-8e5d-ca48b1925237" class="numbered-list" start="3"><li>Sélectionnez la cible (target) lorsque demandée</li></ol></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>🏃‍♂️ Sélection de target et d&#x27;environnement</strong></summary><div class="indented"><p id="19fb8d0e-0150-803b-a812-ed4a43028974" class="">Pour modifier la cible (target) ou l&#x27;environnement de build :</p><ol type="1" id="19fb8d0e-0150-80a2-824a-e2da52c2dbc2" class="numbered-list" start="1"><li>Ouvrez la palette de commandes avec <code>Cmd + Tab + P</code></li></ol><ol type="1" id="19fb8d0e-0150-80cc-ad9e-e012ef812211" class="numbered-list" start="2"><li>Tapez &quot;<code>set scheme</code>&quot; pour changer de scheme</li></ol><ol type="1" id="19fb8d0e-0150-8064-8561-e47b3aaf97db" class="numbered-list" start="3"><li>Tapez &quot;<code>select build configuration</code>&quot; pour basculer entre Debug/Release</li></ol><ol type="1" id="19fb8d0e-0150-8006-a2d9-d3d8654bdc94" class="numbered-list" start="4"><li>Tapez &quot;<code>select destination</code>&quot; pour choisir un appareil spécifique</li></ol></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>🏃‍♂️ Changer de simulateur ou utiliser un appareil physique</strong></summary><div class="indented"><p id="19fb8d0e-0150-801e-bf58-ccd6b9c744d4" class="">Pour sélectionner le simulateur ou un appareil connecté :</p><ol type="1" id="19fb8d0e-0150-80f2-a469-e2e78b092f1c" class="numbered-list" start="1"><li>Ouvrez la palette de commandes (<code>Cmd + Tab + P</code>)</li></ol><ol type="1" id="19fb8d0e-0150-8002-a5b3-e177ff367bcd" class="numbered-list" start="2"><li>Tapez &quot;<code>select destination</code>&quot;</li></ol><ol type="1" id="19fb8d0e-0150-802e-a8ed-d319a903f957" class="numbered-list" start="3"><li>Choisissez parmi les options disponibles</li></ol></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>🏃‍♂️Assistant d&#x27;IA pour le code</strong></summary><div class="indented"><p id="19fb8d0e-0150-801a-a582-e143d7ff0dd4" class="">Pour obtenir de l&#x27;aide sur une ligne spécifique :</p><ol type="1" id="19fb8d0e-0150-808d-bae8-cc331258fcb5" class="numbered-list" start="1"><li>Placez le curseur sur la ligne concernée</li></ol><ol type="1" id="19fb8d0e-0150-80e8-8c0f-f76a65ae0be0" class="numbered-list" start="2"><li>Utilisez <code>Cmd + Tab + K</code> pour ouvrir le compositeur IA</li></ol></div></details><h1 id="19fb8d0e-0150-8010-8df2-f6121fff6f63" class=""><strong>Astuces avancées et bonnes pratiques</strong></h1><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>🧹 Optimisations de performance</strong></summary><div class="indented"><ol type="1" id="19fb8d0e-0150-806d-84bb-db27de8bf9ef" class="numbered-list" start="1"><li><strong>Indexation intelligente</strong><ul id="19fb8d0e-0150-80d8-8897-c87e5d34c9ac" class="bulleted-list"><li style="list-style-type:disc">Ajoutez les dossiers volumineux comme Pods ou Carthage à .<code>cursorignore</code></li></ul><ul id="19fb8d0e-0150-8000-9650-d9379f399cb6" class="bulleted-list"><li style="list-style-type:disc">Cela accélère considérablement l&#x27;indexation et les recherches</li></ul></li></ol><ol type="1" id="19fb8d0e-0150-80e4-89e8-e55fc33c7439" class="numbered-list" start="2"><li><strong>Gestion de la mémoire</strong><ul id="19fb8d0e-0150-80eb-bab0-f801ac9783d2" class="bulleted-list"><li style="list-style-type:disc">Fermez les fichiers non utilisés via <code>Cmd + W</code></li></ul><ul id="19fb8d0e-0150-80fc-a7ab-eaac3e6f1dbb" class="bulleted-list"><li style="list-style-type:disc">Utilisez la commande &quot;<code>Clean Derived Data</code>&quot; périodiquement via la palette de commandes</li></ul></li></ol></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>🐞 Débogage</strong></summary><div class="indented"><p id="19fb8d0e-0150-8061-bee1-ccc467950df7" class="">Pour debugguer votre app, vous devez installer l’extension CodeLLDB dans Cursor, vous pourez ensuite utiliser les commandes classiques de LLDB et les breakpoints</p><ul id="19fb8d0e-0150-8075-9a3e-f69bf4f23161" class="bulleted-list"><li style="list-style-type:disc">Ajoutez l&#x27;extension CodeLLDB dans Cursor</li></ul><ul id="19fb8d0e-0150-80fd-bb6a-d5dc651a5328" class="bulleted-list"><li style="list-style-type:disc">Lancez <code>cmd + maj + P</code> <code>Debug select and start debugging</code> pour lancer le debugger</li></ul><ul id="19fb8d0e-0150-8033-8ab6-c0220b48f288" class="bulleted-list"><li style="list-style-type:disc">Utilisez <code>po</code> pour inspecter les objets pendant le débogage</li></ul><p id="19fb8d0e-0150-80ff-bf75-f4fab13ea0ac" class="">
+</p></div></details><h1 id="19fb8d0e-0150-8009-b474-f6c196849a7b" class=""><strong>Configuration avancée</strong></h1><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>🎨 Personnalisation du thème de code</strong></summary><div class="indented"><p id="19fb8d0e-0150-8080-8faa-ff50e56ab093" class="">Pour une expérience visuelle encore plus proche de Xcode :</p><ol type="1" id="19fb8d0e-0150-8052-977b-ee26bef4b02c" class="numbered-list" start="1"><li>Ajoutez en extension XcodeTheme (<code>Cmd + ,</code>)</li></ol><ol type="1" id="19fb8d0e-0150-8052-abb0-cbcf0725afe1" class="numbered-list" start="2"><li>Sélectionnez le thème de Xcode que vous souhaitez parmi liste des thèmes disponibles</li></ol></div></details><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>✏️ Intégration avec SwiftLint</strong></summary><div class="indented"><p id="19fb8d0e-0150-8014-add9-c8318801de77" class="">Pour une meilleure qualité de code :</p><ol type="1" id="19fb8d0e-0150-806a-bd7e-e73c77d4f149" class="numbered-list" start="1"><li>Installez SwiftLint via Homebrew : <code>brew install swiftlint</code></li></ol><ol type="1" id="19fb8d0e-0150-80a3-a240-cc11b6cde599" class="numbered-list" start="2"><li>Créez un fichier <code>.swiftlint.yml</code> à la racine de votre projet</li></ol><ol type="1" id="19fb8d0e-0150-800a-9a46-cdb9112b9d67" class="numbered-list" start="3"><li>Configurez l&#x27;extension Swift pour utiliser SwiftLint</li></ol><p id="19fb8d0e-0150-80ca-b315-c84cc04db771" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">Inconvénients </summary><div class="indented"><h2 id="19fb8d0e-0150-80cd-be47-dec5366c6594" class=""><strong>❌ Gestion des XCAssets</strong></h2><p id="19fb8d0e-0150-80f8-9e5a-e440550aa24d" class="">Le catalogue XCAssets est un ensemble de répertoires contenant des fichiers d&#x27;assets et des configurations <code>Contents.json</code>. Malheureusement, VSCode/Cursor ne sait pas les gérer correctement.</p><p id="19fb8d0e-0150-8006-9ca4-e44051d1eb27" class=""><strong>Solution</strong>: Gardez Xcode ouvert et basculez avec <code>CMD + Tab</code> lorsque vous devez modifier des assets. Heureusement, l&#x27;autocomplétion des assets fonctionne correctement dans VSCode/Cursor.</p><h2 id="19fb8d0e-0150-80b4-b69a-e5d623bb2712" class=""><strong>❌  Preview SwiftUI</strong></h2><p id="19fb8d0e-0150-8074-9efb-ded226a70246" class="">Les previews SwiftUI ne sont pas disponibles dans Cursor. Il est nécessaire de conserver Xcode ouvert à côté pour bénéficier des previews en temps réel.</p><h2 id="19fb8d0e-0150-8095-b1c6-da950d697d12" class=""><strong>❌  Interface Builder</strong></h2><p id="19fb8d0e-0150-80c4-82d5-c2312ec794e6" class="">Cursor ne propose pas à ce jour d’extension permettant d&#x27;utiliser l&#x27;Interface Builder pour les fichiers XIB/Storyboard. Tout doit être fait en code, utilisez donc snapKit ou swiftUI</p><h2 id="19fb8d0e-0150-808d-954e-cf01b1b5f8a4" class=""><strong>❌  </strong>Analyse avancée </h2><p id="19fb8d0e-0150-80ce-a242-efba67498c5d" class="">Cursor ne propose pas d&#x27;Instruments ou d&#x27;autres outils d&#x27;analyse de performance (CPU, mémoire, réseau) tels que Xcode, il vous faudra donc basculer sur Xcode pour ces phases d’analyses de performances / deboggage</p><h2 id="19fb8d0e-0150-80cc-a925-e4c7e6b0b460" class=""><strong>❌  </strong>Documentation Apple</h2><p id="19fb8d0e-0150-80f1-b39f-f18f5bb3ca8f" class="">Cursor ne permets pas d’ouvrir rapidement la documentation apple via des hyperliens comme Xcode</p><h2 id="19fb8d0e-0150-8082-ac01-c3b593f33201" class=""><strong>❌  </strong>SPM &amp; configuration</h2><p id="19fb8d0e-0150-80ba-a117-d25c3a48e724" class="">Cursor ne permet pas facilement d’ajouter des package spm, de même l’interface de configuration des targets de Xcode est manquante. À moins que vous n’ayez le courage de faire vos modifications et ajouts en textuel dans le pbXproj, utiliser Xcode pour cette étape semble plus raisonnable à l’heure actuelle</p></div></details><h1 id="19fb8d0e-0150-8059-b503-f2e00fcb84a9" class=""><strong>Conclusion</strong></h1><p id="19fb8d0e-0150-8054-b305-d009e1eb98ee" class="">En suivant ce guide, vous disposez maintenant d&#x27;un environnement Swift combinant le compilateur Xcode et l&#x27;interface intelligente de Cursor. Cette configuration personnalisée préserve vos habitudes tout en apportant les avantages de Cursor. Cette alliance Cursor/Xcode offre un excellent équilibre entre puissance et productivité pour le développement iOS et macOS.</p><p id="19fb8d0e-0150-8023-a765-f4b7fab63c71" class="">
+</p><p id="19fb8d0e-0150-8066-9aa5-ef986c6efdaa" class="">Lien vers d’autres articles traitant du sujet :</p><p id="19fb8d0e-0150-8000-9382-c82b813641bf" class=""><a href="https://levelup.gitconnected.com/working-on-an-xcode-project-with-cursor-vscode-56c20fce94ac">https://levelup.gitconnected.com/working-on-an-xcode-project-with-cursor-vscode-56c20fce94ac</a></p><p id="19fb8d0e-0150-803a-ae21-df533419f919" class=""><a href="https://kazaimazai.com/cursor-for-ios-development-installation-guide/">https://kazaimazai.com/cursor-for-ios-development-installation-guide/</a></p><p id="19fb8d0e-0150-80d9-bf82-ce75a025ba94" class=""><a href="https://kazaimazai.com/personal-experience-of-using-cursor-for-ios-development/">https://kazaimazai.com/personal-experience-of-using-cursor-for-ios-development/</a></p><p id="19fb8d0e-0150-80ac-ad89-cfb880a052ca" class=""><a href="https://medium.com/@ahmedsulaiman/debugging-swift-code-with-lldb-b30c5cf2fd49">https://medium.com/@ahmedsulaiman/debugging-swift-code-with-lldb-b30c5cf2fd49</a></p><p id="19fb8d0e-0150-8018-8c8b-dd9b49c77c20" class=""><a href="https://dimillian.medium.com/how-to-use-cursor-for-ios-development-54b912c23941">https://dimillian.medium.com/how-to-use-cursor-for-ios-development-54b912c23941</a></p><p id="19fb8d0e-0150-8040-acc1-fa78670e926b" class="">
+</p><p id="19fb8d0e-0150-8017-862b-e5fa14ac4e21" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
